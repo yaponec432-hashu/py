@@ -1,0 +1,29 @@
+name: ubuntu
+on:
+  schedule:
+    - cron: "17 * * * *"
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  myubuntu:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.x"
+
+      - name: Install dependencies
+        run: |
+          python3 -m pip install -U pip
+          python3 -m pip install -U gpytranslate 'nextcord[speed]'
+
+      - name: Run bot
+        run: python3 ./main.py
+        env:
+          TOKEN: ${{ secrets.TOK }}
