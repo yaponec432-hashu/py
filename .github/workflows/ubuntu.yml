@@ -13,7 +13,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
-      - name: Setup Python
+      - name: Setup python
         uses: actions/setup-python@v6
         with:
           python-version: "3.x"
@@ -23,7 +23,7 @@ jobs:
           python3 -m pip install -U pip
           python3 -m pip install -U gpytranslate 'nextcord[speed]'
 
-      - name: Run bot
-        run: python3 ./main.py
+      - name: Run Python
+        run: python file
         env:
           TOKEN: ${{ secrets.TOK }}
