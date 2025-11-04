@@ -234,6 +234,12 @@ async def tra(ctx, text: str, lang: str):
     result = await translate(text, lang)
     await reply(ctx, result)
 
+@bot.slash_command(description="translate the text into russian")
+async def russian(ctx: Interaction, text_for_translation: str):
+    await dfr(ctx)
+    result = await translate(text_for_translation, "ru")
+    await reply(ctx, result)
+
 @bot.slash_command(description="send an extract of random wiki page")
 async def wiki(ctx):
     await dfr(ctx)
@@ -293,6 +299,42 @@ async def random_str(ctx):
 async def random(ctx, start: int=1, stop: int=100):
     await dfr(ctx)
     result = randint(start, stop)
+    await reply(ctx, result)
+
+@bot.slash_command(description="send a random prive emoji")
+async def prive(ctx):
+    await dfr(ctx)
+    emojis = ("<a:priveKanade:1435239192857673728>",
+              "<a:priveEmu:1435237988614537369>",
+              "<a:priveMinoriB:1435236915342479421>",
+              "<a:priveSakiD:1435234929356177428>",
+              "<a:priveSakiC:1435233481730031838>",
+              "<a:priveHaruka:1435232297472360478>",
+              "<a:priveEmuNeneB:1435231679345328148>",
+              "<a:priveEmuNeneA:1435230086554062940>",
+              "<a:priveKohane:1435228559580069948>",
+              "<a:priveQ84:1435226789067751544>",
+              "<a:priveSakiB:1435225668676882582>",
+              "<a:priveVanity:1435224819590496277>",
+              "<a:priveN00b:1435221909783449702>",
+              "<a:priveShizuAiri:1435220775866204210>",
+              "<a:priveSakiA:1435219922753159340>",
+              "<a:priveAiri:1435219009933934682>",
+              "<a:priveMiku:1435217089064468582>",
+              "<a:priveMinoriA:1435216177629630504>")
+    result = choice(emojis)
+    await reply(ctx, result)
+
+@bot.slash_command(description="kanadewave pic")
+async def kanawave(ctx):
+    await dfr(ctx)
+    result = "<a:kanawave:1435247126811775057>"
+    await reply(ctx, result)
+
+@bot.slash_command(description="haruka pic")
+async def haru(ctx):
+    await dfr(ctx)
+    result = "<:haruka:1430084537676726415>"
     await reply(ctx, result)
 
 @bot.slash_command(description="jason pic")
@@ -374,7 +416,7 @@ async def img(ctx):
 @bot.slash_command(description="check is bot alive")
 async def bot_check(ctx):
     await dfr(ctx)
-    result = "goddamn whatsup"
+    result = "slava ReBRT"
     await reply(ctx, result)
 
 async def reply(ctx, result):
