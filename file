@@ -228,16 +228,16 @@ async def ln(ctx, text):
     result = len(text)
     await reply(ctx, result)
 
-@bot.slash_command(description="translate the text")
+@bot.slash_command(description="translate the text (lang: en,ru,etc)")
 async def tra(ctx, text: str, lang: str):
     await dfr(ctx)
-    result = await translate(text, lang)
+    result = await translate(text[:2000], lang)
     await reply(ctx, result)
 
 @bot.slash_command(description="translate the text into russian")
 async def russian(ctx: Interaction, text_for_translation: str):
     await dfr(ctx)
-    result = await translate(text_for_translation, "ru")
+    result = await translate(text_for_translation[:2000], "ru")
     await reply(ctx, result)
 
 @bot.slash_command(description="send an extract of random wiki page")
