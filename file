@@ -25,8 +25,10 @@ sizeunits = {"kb": 10**3*8, "mb": 10**6*8, "gb": 10**9*8, "tb": 10**12*8,
 
 @bot.event
 async def on_ready():
-    for guild in bot.guilds:
-        print(guild.name)
+    print("ready")
+    async for g in client.fetch_guilds(limit=10):
+        print(g.name)
+
 
 @bot.slash_command(description="flip a coin")
 async def coin(ctx):
