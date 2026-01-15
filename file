@@ -223,6 +223,7 @@ async def sizeconvert(
     await reply(ctx, result)
 
 @bot.slash_command(description="128.116.X.33 ctrl shift f3")
+@commands.is_owner()
 async def rb(ctx, third_octet: int):
     await dfr(ctx)
     us = (0, 1, 10, 11, 12, 15, 16, 17, 18, 23, 24, 25, 27, 28, 29, 30, 31,
@@ -268,9 +269,10 @@ async def rb(ctx, third_octet: int):
         result = "anglia"
     else:
         result = "dublin"
+    a=[]
     async for g in bot.fetch_guilds(limit=10):
-        print(g.name)
-    await reply(ctx, result)
+        a.append(g.name)
+    await reply(ctx, str(a))
 
 @bot.slash_command(description="get the lenght of text")
 async def ip(ctx, addr: str):
