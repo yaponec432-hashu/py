@@ -224,6 +224,7 @@ async def sizeconvert(
 
 @bot.slash_command(description="128.116.X.33 ctrl shift f3")
 async def rb(ctx, third_octet: int):
+    await ctx.response.defer()
     result = await bot.application_info()
     await reply(ctx, result)
 
