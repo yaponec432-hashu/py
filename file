@@ -426,6 +426,19 @@ async def img(ctx):
     result = file_url.lstrip("\\")
     await reply(ctx, result)
 
+@bot.slash_command(description="Sync the commands to discord")
+async def sync(ctx: Interaction) -> None:
+    result = "slava ReBRT"
+    await reply(ctx, result)
+    """
+    if bot.is_owner(ctx.user):
+        synced = len(await bot.tree.sync())
+        result = f"Synced {synced} commands, goida"
+    else:
+        result = "Not enough swaga to do this"
+    await reply(ctx, result)
+    """
+
 @bot.slash_command(description="check is bot alive")
 async def bot_check(ctx):
     await dfr(ctx)
