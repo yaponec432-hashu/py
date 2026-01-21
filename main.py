@@ -588,4 +588,4 @@ async def reply(
     else:
         _ = await ctx.response.send_message(result)
 
-bot.run(environ["TOK"])
+bot.run(environ["TOKEN"])
