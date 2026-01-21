@@ -327,7 +327,7 @@ async def russian(ctx: Interaction, text: str):
 
 @bot.tree.command(description="Send an extract of a random wikipedia page")
 async def random_wikipedia_extract(ctx: Interaction):
-    url = "https://en.wikipedia.org/w/api.php?format=json&action=query&explaintext&generator=random&grnnamespace=0&prop=extracts&grnlimit=1&exintro&redirects="
+    url = ("https://en.wikipedia.org/w/api.php?format=json&action=query"                                                         "&explaintext&generator=random&grnnamespace=0&prop=extracts"                                                          "&grnlimit=1&exintro&redirects=")
     page = await get_response(url)
     parsed = loads(page)
     id = str(*parsed["query"]["pages"])
