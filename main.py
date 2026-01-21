@@ -45,7 +45,7 @@ async def on_message(message: Message) -> None:
     if message.author != bot.user:
         anti_you = "\u0430\u043d\u0442\u0438 \u044e"
         if anti_you in message.content.lower():
-            emoji = "<a:halal_antiyou:1463294524473475357>"
+            emoji = "<a:halal_antiyou:1463296137174974587>"
             _ = await message.reply(content=emoji, mention_author=False)
 
 @bot.tree.command(description="Flip a coin")
