@@ -7,24 +7,24 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  myubuntu:
+  halal:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup python
         uses: actions/setup-python@v6
         with:
-          python-version: "3.11"
+          python-version: "3.13"
 
       - name: Install dependencies
         run: |
-          curl -ZL 'https://api.animechan.io/v1/quotes/random'
           python3 -m pip install -U pip
-          python3 -m pip install -U gpytranslate 'nextcord[speed]'
+          python3 -m pip install -U gpytranslate 'discord[speed]' \
+            wikipedia simpleeval
 
       - name: Run Python
-        run: python file
+        run: python3 ./main.py
         env:
           TOKEN: ${{ secrets.TOK }}
