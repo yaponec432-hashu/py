@@ -1,4 +1,4 @@
-name: ubuntu
+name: namaz
 on:
   schedule:
     - cron: "17 * * * *"
@@ -22,7 +22,7 @@ jobs:
         run: |
           python3 -m pip install -U pip
           python3 -m pip install -U gpytranslate 'discord[speed]' \
-            wikipedia simpleeval
+            wikipedia simpleeval aiodns Brotli zstandard orjson
 
       - name: Run Python
         run: python3 ./main.py
