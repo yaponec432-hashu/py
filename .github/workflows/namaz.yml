@@ -16,15 +16,14 @@ jobs:
       - name: Setup python
         uses: actions/setup-python@v6
         with:
-          python-version: "3.13"
+          python-version: "3.13t"
+          cache: 'pip'
 
       - name: Install dependencies
         run: |
-          python3 -m pip install -U pip
-          python3 -m pip install -U gpytranslate 'discord[speed]' \
-            wikipedia simpleeval aiodns Brotli zstandard orjson
+          pip install -r ./requirements.txt
 
-      - name: Run Python
+      - name: Run python
         run: python3 ./main.py
         env:
           TOKEN: ${{ secrets.TOK }}
