@@ -5,6 +5,8 @@ on:
 concurrency:
   group: ${{ github.workflow }}
   cancel-in-progress: true
+permissions:
+  contents: read
 
 jobs:
   halal:
@@ -17,6 +19,7 @@ jobs:
         uses: actions/setup-python@v6
         with:
           python-version: "3.13t"
+          freethreaded: true
           cache: 'pip'
 
       - name: Install dependencies
