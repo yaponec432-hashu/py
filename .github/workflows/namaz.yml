@@ -20,7 +20,6 @@ jobs:
         with:
           python-version: "3.13t"
           freethreaded: true
-          cache: 'pip'
 
       - name: Install dependencies
         run: |
