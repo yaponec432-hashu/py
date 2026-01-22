@@ -51,7 +51,7 @@ async def coin(ctx: Interaction) -> None:
 
 @bot.tree.command(description="Pick a random item of all items")
 @app_commands.describe(items="Set the space separated items list")
-async def pick(ctx: Interaction, items: str):
+async def pick(ctx: Interaction, items: str) -> None:
     result = choice(items.split())
     await reply(ctx, result)
 
@@ -134,7 +134,7 @@ async def leaderboard(
     await reply(ctx, result, True)
 
 @bot.tree.command(description="Check is api.sekai.best alive")
-async def check_api(ctx):
+async def check_api(ctx: Interaction) -> None:
     url = "https://api.sekai.best/status"
     response_text = get_response(url)
     if response_text is None:
@@ -305,34 +305,20 @@ async def guess(
 
 @bot.tree.command(description="Get the text lenght")
 @app_commands.describe(text="Set the text to measure")
-async def length(ctx, text: str):
+async def length(ctx: Interaction, text: str) -> None:
     result = len(text)
     await reply(ctx, result)
 
 @bot.tree.command(description="Translate the text")
 @app_commands.describe(text="Set the text for translation")
-async def translate(ctx, text: str, target_language: str):
-    result = await translate(text[:2000], target_language)
+async def translate(ctx: Interaction, text: str, target_language: str) -> None:
+    result = await translate_text(text[:2000], target_language)
     await reply(ctx, result)
 
 @bot.tree.command(description="Translate the text into russian")
 @app_commands.describe(text="Set the text for translation")
-async def russian(ctx: Interaction, text: str):
+async def russian(ctx: Interaction, text: str) -> None:
     result = await translate(text_for_translation[:2000], "ru")
-    await reply(ctx, result)
-
-@bot.tree.command(description="Send an extract of a random wikipedia page")
-async def random_wikipedia_extract(ctx: Interaction):
-    url = (
-        "https://en.wikipedia.org/w/api.php?format=json&action=query"
-        "&explaintext&generator=random&grnnamespace=0&prop=extracts"
-        "&grnlimit=1&exintro&redirects="
-    )
-    page = await get_response(url)
-    parsed = loads(page)
-    id = list(parsed["query"]["pages"].keys())[0]
-    text = parsed["query"]["pages"][id]["extract"]
-    result = text[:2000]
     await reply(ctx, result)
 
 @bot.tree.command(description="Wikipedia search")
@@ -458,7 +444,6 @@ async def sfw_categorized(ctx: Interaction, category: str) -> None:
     result = parsed["url"]
     await reply(ctx, result)
 
-
 @bot.tree.command(description="Send a random categorized nsfw image")
 @app_commands.choices(
     category=[
@@ -515,7 +500,7 @@ class Top:
         self.user_name = user_name
         self.score = score
 
-    def __str__(self):
+    def __str__(self) -> str:
         return (f"{self.top} '{self.user_name[slice(20)]}'"
                 f" {'{0:,}'.format(self.score)}\n")
 
