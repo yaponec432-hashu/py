@@ -1,5 +1,4 @@
 orjson>=3.5.4
-aiodns>=1.1
 Brotli>=1.2.0
 zstandard>=0.23.0
 charset_normalizer>=3.4.4
