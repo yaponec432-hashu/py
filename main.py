@@ -37,10 +37,6 @@ api_dead = f"{markup} umer nahui :("
 api_issue = f"{markup} issue"
 
 @bot.event
-async def on_ready() -> None:
-    print(f"Logged in as {bot.user} (ID: {bot.user.id})")
-
-@bot.event
 async def on_message(message: Message) -> None:
     if message.author != bot.user:
         anti_you = "\u0430\u043d\u0442\u0438 \u044e"
@@ -334,7 +330,7 @@ async def random_wikipedia_extract(ctx: Interaction):
     )
     page = await get_response(url)
     parsed = loads(page)
-    id = str(*parsed["query"]["pages"])
+    id = list(parsed["query"]["pages"].keys())[0]
     text = parsed["query"]["pages"][id]["extract"]
     result = text[:2000]
     await reply(ctx, result)
