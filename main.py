@@ -575,6 +575,8 @@ async def reply(
     defer: bool = False
 ) -> None:
     """Send the result."""
+    if result == "":
+        result = "Error hz"
     if defer:
         _ = await ctx.followup.send(result)
     else:
