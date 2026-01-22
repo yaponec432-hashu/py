@@ -7,7 +7,6 @@ from random import randint, choice
 from datetime import datetime
 from os import environ
 from re import match
-from wikipedia import set_lang, summary, DisambiguationError
 from gpytranslate import Translator
 from simpleeval import simple_eval
 from aiohttp import ClientSession
@@ -20,6 +19,12 @@ from discord import (
     Interaction,
     Member,
     Message
+)
+from wikipedia import (
+    set_lang,
+    summary,
+    PageError,
+    DisambiguationError
 )
 from orjson import loads
 
@@ -338,6 +343,8 @@ async def wikipedia_search(
     except DisambiguationError as wiki_issue:
         random = choice(wiki_issue.options)
         wikitext = summary(random)
+    except PageError:
+        wikitext = "Not found"
     result = wikitext[:2000]
     await reply(ctx, result, True)
 
