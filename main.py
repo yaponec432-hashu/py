@@ -552,7 +552,7 @@ async def get_response(url: str) -> str:
         async with session.get(url, headers=headers) as response:
             return await response.text()
 
-async def translate(text: str, target_language: str) -> str:
+async def translate_text(text: str, target_language: str) -> str:
     async with Translator() as translator:
         result = await translator.translate(text[:2000],
                                             targetlang=target_language)
