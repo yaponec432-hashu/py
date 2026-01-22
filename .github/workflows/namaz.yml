@@ -1,7 +1,7 @@
 name: namaz
 on:
   schedule:
-    - cron: "00 * * * *"
+    - cron: "58 * * * *"
 concurrency:
   group: ${{ github.workflow }}
   cancel-in-progress: true
