@@ -28,6 +28,7 @@ jobs:
             #wikipedia simpleeval aiodns Brotli zstandard orjson
 
       - name: Run python
+        continue-on-error: true
         run: python3 ./main.py
         env:
           TOKEN: ${{ secrets.TOK }}
