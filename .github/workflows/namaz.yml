@@ -19,11 +19,13 @@ jobs:
         uses: actions/setup-python@v6
         with:
           python-version: "3.13"
+          cache: "pip"
 
       - name: Install dependencies
         run: |
-          pip install gpytranslate 'discord[speed]' \
-            wikipedia simpleeval aiodns Brotli zstandard orjson
+          pip inatall -r ./requirements.txt
+          #pip install gpytranslate 'discord[speed]' \
+            #wikipedia simpleeval aiodns Brotli zstandard orjson
 
       - name: Run python
         run: python3 ./main.py
