@@ -1,7 +1,7 @@
 name: namaz
 on:
   schedule:
-    - cron: "49 */2 * * *"
+    - cron: "50 * * * *"
 concurrency:
   group: ${{ github.workflow }}
   cancel-in-progress: true
@@ -23,7 +23,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip inatall -r ./requirements.txt
+          pip install -r ./requirements.txt
           #pip install gpytranslate 'discord[speed]' \
             #wikipedia simpleeval aiodns Brotli zstandard orjson
 
