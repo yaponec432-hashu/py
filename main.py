@@ -355,11 +355,12 @@ async def calculate(ctx: Interaction, expression: str) -> None:
     await reply(ctx, result)
 
 @bot.tree.command(description="Get the weather information")
-@app_commands.describe(location="Set a location, like moskva")
+@app_commands.describe(location="Set the location, like moskva")
 async def weather(ctx: Interaction, location: str) -> None:
+    await defer(ctx)
     url = f"https://wttr.in/{location}?format=%t+%C+%uuw+%T&m&lang=ru"
     result = await get_response(url)
-    await reply(ctx, result)
+    await reply(ctx, result, True)
 
 @bot.tree.command(description="Repeat the text")
 @app_commands.describe(
