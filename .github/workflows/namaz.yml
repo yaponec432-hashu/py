@@ -1,7 +1,7 @@
 name: namaz
 on:
   schedule:
-    - cron: "25,55 * * * *"
+    - cron: "49 */4 * * *"
 concurrency:
   group: ${{ github.workflow }}
   cancel-in-progress: true
@@ -22,22 +22,10 @@ jobs:
 
       - name: Install uv
         run: |
-          bash -c "$(curl -ZLf https://astral.sh/uv/install.sh)"
+          bash -c "$(curl -Lfs https://astral.sh/uv/install.sh)"
           echo "${HOME}/.cargo/bin" >> "${GITHUB_PATH}"
-
-      - name: Install dependencies
-        run: uv sync
 
       - name: Run python
         run: uv run ./main.py
         env:
           TOKEN: ${{ secrets.TOK }}
-
-#      - name: Install dependencies
-#        run: |
-#          pip install -r ./requirements.txt
-#
-#      - name: Run python
-#        run: python3 ./main.py
-#        env:
-#          TOKEN: ${{ secrets.TOK }}
