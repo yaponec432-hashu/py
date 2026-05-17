@@ -36,5 +36,6 @@ jobs:
           uv run ./slave.py &
           wait
         env:
-          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          MASTER_TOKEN: ${{ secrets.MASTER_TOKEN }}
+          SLAVE_TOKEN: ${{ secrets.SLAVE_TOKEN }}
           BOT_SYNC_ENABLED: 0
