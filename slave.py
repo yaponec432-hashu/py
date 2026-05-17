@@ -42,8 +42,8 @@ class SlaveBot(Client):
             return
         old_code = channel_name[-self.sekai_code_len:]
         new_code = name[-self.sekai_code_len:]
-        content = f"~~{old_code}~~ → **`{new_code}`**"
         try:
+            content = f"~~{old_code}~~ → **`{new_code}`**"
             reason = "ебучие рерумы"
             await wait_for(channel.edit(name=name, reason=reason), timeout=2.0)
         except TimeoutError:
