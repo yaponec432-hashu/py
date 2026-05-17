@@ -9,7 +9,6 @@ from discord import (
     Intents,
     Client,
     Game,
-    Interaction,
     ClientUser,
     Message,
     Member,
@@ -36,7 +35,7 @@ class SlaveBot(Client):
         message_text = message.content
         if message_text[0] != "!":
             return
-        name = message_text.split()[1]
+        name = message_text[1:]
         channel = message.channel
         channel_name = channel.name
         if name == channel_name:
@@ -48,7 +47,9 @@ class SlaveBot(Client):
             reason = "ебучие рерумы"
             await wait_for(channel.edit(name=name, reason=reason), timeout=2.0)
         except TimeoutError:
-            content = f"# Юзни `%rm {new_code}` :warning:"
+            content = (
+                f"# :warning: Используй эту команду:\n```%rm {new_code}```"
+            )
         except Forbidden:
             content = "**У меня нет прав** на управление каналами"
         await message.reply(content=content, mention_author=False)
