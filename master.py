@@ -189,7 +189,7 @@ def is_manager(author: Member) -> bool:
 
 def main() -> None:
     install()
-    token = environ["BOT_TOKEN"]
+    token = environ["MASTER_TOKEN"]
     bot.run(token)
 
 if __name__ == "__main__":
