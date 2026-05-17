@@ -107,15 +107,6 @@ async def translate_into_russian(ctx: Interaction, message: Message) -> None:
     result = await translate(message.content, "ru")
     await reply(ctx, result, True)
 
-@bot.tree.command(description="Найти ориг ник чела")
-@app_commands.describe(
-    member="Чел"
-)
-async def member_name(ctx: Interaction, member: Member) -> None:
-    name = member.global_name
-    result = name if name else member.name
-    await reply(ctx, result)
-
 @bot.tree.command(description="Найти аву чела")
 @app_commands.describe(
     member="Чел"
