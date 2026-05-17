@@ -1,4 +1,4 @@
-name: run
+name: run bot
 on:
   schedule:
     - cron: '29 23,01,04,07,11,15,19 * * *'
@@ -33,7 +33,7 @@ jobs:
             sleep 1
           done
           export MASTER_ID="$(cat ${master_id_file})"
-          echo "${MASTER_ID}"
+          uv run ./slave.py &
           wait
         env:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
