@@ -1,4 +1,4 @@
-name: uptime
+name: Save uptime
 on:
   schedule:
     - cron: '29 11 14 * *'
