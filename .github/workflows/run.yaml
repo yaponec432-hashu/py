@@ -11,7 +11,7 @@ permissions:
   contents: read
 
 jobs:
-  run-bot:
+  run-bots:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -25,17 +25,9 @@ jobs:
       - name: Install uv
         run: bash -c "$(curl -Lf https://astral.sh/uv/install.sh)"
 
-      - name: Run python
-        run: |
-          uv run ./master.py &
-          master_id_file='./master_id'
-          until [[ -r "${master_id_file}" ]]; do
-            sleep 1
-          done
-          export MASTER_ID="$(cat ${master_id_file})"
-          uv run ./slave.py &
-          wait
+      - name: Run the bots
+        run: bash ./.github/run.sh
         env:
           MASTER_TOKEN: ${{ secrets.MASTER_TOKEN }}
           SLAVE_TOKEN: ${{ secrets.SLAVE_TOKEN }}
-          BOT_SYNC_ENABLED: 1
+          BOT_SYNC_ENABLED: 0
