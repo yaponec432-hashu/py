@@ -71,7 +71,9 @@ class MasterBot(Client):
             content = f"~~{old_code}~~ → **`{message_text}`**"
             reason = "старый код румы был депнут в казик"
             name = room_prefix + message_text
-            await wait_for(channel.edit(name=name, reason=reason), timeout=2.0)
+            async with channel.typing():
+                await wait_for(
+                    channel.edit(name=name, reason=reason), timeout=2.0)
         except TimeoutError:
             content = "!" + name
         except Forbidden:
