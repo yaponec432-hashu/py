@@ -45,7 +45,9 @@ class SlaveBot(Client):
         try:
             content = f"~~{old_code}~~ → **`{new_code}`**"
             reason = "ебучие рерумы"
-            await wait_for(channel.edit(name=name, reason=reason), timeout=2.0)
+            async with channel.typing():
+                await wait_for(
+                    channel.edit(name=name, reason=reason), timeout=2.0)
         except TimeoutError:
             content = (
                 f"# :warning: Используй эту команду:\n```%rm {new_code}```"
