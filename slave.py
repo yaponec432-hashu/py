@@ -2,9 +2,9 @@
 # SPDX-License-Identifier: 0BSD
 """A discord bot."""
 
-from asyncio import wait_for
+from asyncio import set_event_loop_policy, wait_for
 from os import environ
-from uvloop import install
+from uvloop import EventLoopPolicy
 from discord import (
     Intents,
     Client,
@@ -63,7 +63,7 @@ def is_master(author: Member) -> bool:
     return result
 
 def main() -> None:
-    install()
+    set_event_loop_policy(EventLoopPolicy())
     token = environ["SLAVE_TOKEN"]
     bot.run(token)
 
