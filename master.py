@@ -128,30 +128,6 @@ async def check_sync(ctx: Interaction) -> None:
     result = "Ага" if bot.sync_enabled else "Нет нихуя"
     await reply(ctx, result)
 
-async def translate(source_text: str, target_language: str) -> str:
-    translator = Translator()
-    try:
-        translation = await translator.translate(
-            source_text[:bot.max_message_len],
-            targetlang=target_language)
-        result = translation.text
-    except TranslationError:
-        result = "*Translation error, try again*"
-    return result
-
-async def reply(
-    ctx: Interaction,
-    result: str,
-    defer: bool = False
-) -> None:
-    """Send the result."""
-    if result == "":
-        result = "Полундра штото пошло нетак"
-    if defer:
-        await ctx.followup.send(result)
-    else:
-        await ctx.response.send_message(result)
-
 def is_human_in_text_channel(
     author: Member,
     channel: Messageable
@@ -179,6 +155,30 @@ def is_sekai_code(text: str) -> bool:
 def is_manager(author: Member) -> bool:
     result = any(role.name in bot.manager_roles for role in author.roles)
     return result
+
+async def translate(source_text: str, target_language: str) -> str:
+    translator = Translator()
+    try:
+        translation = await translator.translate(
+            source_text[:bot.max_message_len],
+            targetlang=target_language)
+        result = translation.text
+    except TranslationError:
+        result = "*Translation error, try again*"
+    return result
+
+async def reply(
+    ctx: Interaction,
+    result: str,
+    defer: bool = False
+) -> None:
+    """Send the result."""
+    if result == "":
+        result = "Полундра штото пошло нетак"
+    if defer:
+        await ctx.followup.send(result)
+    else:
+        await ctx.response.send_message(result)
 
 async def main() -> None:
     token = environ["MASTER_TOKEN"]
