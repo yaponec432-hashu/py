@@ -2,11 +2,11 @@
 # SPDX-License-Identifier: 0BSD
 """A discord bot."""
 
-from asyncio import set_event_loop_policy, wait_for
+from asyncio import wait_for, Runner
 from os import environ
 from gpytranslate import Translator, TranslationError
 from discord.abc import Messageable
-from uvloop import EventLoopPolicy
+from uvloop import new_event_loop
 from discord import (
     app_commands,
     Intents,
@@ -180,10 +180,11 @@ def is_manager(author: Member) -> bool:
     result = any(role.name in bot.manager_roles for role in author.roles)
     return result
 
-def main() -> None:
-    set_event_loop_policy(EventLoopPolicy())
+async def main() -> None:
     token = environ["MASTER_TOKEN"]
-    bot.run(token)
+    async with bot:
+       await bot.start(token)
 
 if __name__ == "__main__":
-    main()
+    with Runner(loop_factory=new_event_loop) as runner:
+        runner.run(main())
