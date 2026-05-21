@@ -33,7 +33,7 @@ class SlaveBot(Client):
         if not is_master(message.author):
             return
         message_text = message.content
-        if message_text[0] != "!":
+        if message_text[0] != "z":
             return
         name = message_text[1:]
         channel = message.channel
