@@ -132,7 +132,7 @@ def is_human_in_text_channel(
     author: Member,
     channel: Messageable
 ) -> bool:
-    result = not author.bot and type(channel) is TextChannel
+    result = not author.bot and isinstance(channel, TextChannel)
     return result
 
 def get_room_prefix(channel_name: str) -> str:
