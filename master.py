@@ -75,7 +75,7 @@ class MasterBot(Client):
                 await wait_for(
                     channel.edit(name=name, reason=reason), timeout=2.0)
         except TimeoutError:
-            content = "!" + name
+            content = "z" + name
         except Forbidden:
             content = "**У меня нет прав** на управление каналами"
         await message.reply(content=content, mention_author=False)
