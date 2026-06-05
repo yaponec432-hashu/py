@@ -17,7 +17,7 @@ from discord import (
     ClientUser,
     Message,
     Member,
-    RateLimited
+    RateLimited,
     Forbidden
 )
 
