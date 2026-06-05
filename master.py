@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: 0BSD
 """A discord bot."""
 
-from asyncio import wait_for, Runner
+from asyncio import Runner
 from os import environ
 from gpytranslate import Translator, TranslationError
 from discord.abc import Messageable
@@ -17,6 +17,7 @@ from discord import (
     ClientUser,
     Message,
     Member,
+    RateLimited
     Forbidden
 )
 
@@ -71,10 +72,8 @@ class MasterBot(Client):
             content = f"~~{old_code}~~ → **`{message_text}`**"
             reason = "старый код румы был депнут в казик"
             name = room_prefix + message_text
-            async with channel.typing():
-                await wait_for(
-                    channel.edit(name=name, reason=reason), timeout=2.0)
-        except TimeoutError:
+            await channel.edit(name=name, reason=reason)
+        except RateLimited:
             content = "z" + name
         except Forbidden:
             content = "**У меня нет прав** на управление каналами"
