@@ -60,8 +60,7 @@ class MasterBot(Client):
         if not is_sekai_code(message_text):
             return
         channel_name = channel.name
-        old_code = channel_name[-self.sekai_code_len:]
-        if message_text == old_code:
+        if message_text == channel_name[-self.sekai_code_len:]:
             return
         room_prefix = get_room_prefix(channel_name)
         if not room_prefix:
@@ -70,11 +69,9 @@ class MasterBot(Client):
             return
         try:
             content = f":white_check_mark: `{message_text}`"
-            reason = "старый код румы был депнут в казик"
             name = room_prefix + message_text
             async with channel.typing():
-                await wait_for(
-                    channel.edit(name=name, reason=reason), timeout=2.0)
+                await wait_for(channel.edit(name=name), timeout=2.0)
         except TimeoutError or RateLimited or HTTPException:
             content = "z" + name
         except Forbidden:
