@@ -10,6 +10,8 @@ from discord import (
     app_commands,
     Intents,
     Client,
+    Embed,
+    Color,
     Game,
     Interaction,
     TextChannel,
@@ -26,7 +28,7 @@ class MasterBot(Client):
     def __init__(self) -> None:
         activity = Game("трахает робонене")
         intents = Intents.default()
-        intents.message_content = True
+        intents.message_description = True
         super().__init__(
             intents=intents,
             activity=activity,
@@ -68,15 +70,20 @@ class MasterBot(Client):
         if not is_manager(author):
             return
         try:
-            content = f":white_check_mark: `{message_text}`"
+            content = None
+            description = f"# `{message_text}`"
+            embed = Embed(description=description, color=Color.green())
             name = room_prefix + message_text
             async with channel.typing():
                 await wait_for(channel.edit(name=name), timeout=2.0)
         except TimeoutError or RateLimited or HTTPException:
             content = "z" + name
+            embed = None
         except Forbidden:
-            content = "**У меня нет прав** на управление каналами"
-        await message.reply(content=content, mention_author=False)
+            content = None
+            description = "**У меня нет прав** на управление каналами"
+            embed = Embed(description=description, color=Color.red())
+        await message.reply(content=content, embed=embed, mention_author=False)
 
 bot = MasterBot()
 
@@ -85,41 +92,55 @@ async def translate_from_crystalian(
     ctx: Interaction,
     message: Message
 ) -> None:
-    qwerty = (
-        "qwertyuiop[]asdfghjkl;'zxcvbnm,./QWERTYUIOP{}ASDFGHJKL:\"ZXCVBNM<>?"
-    )
-    russian = (
-        "йцукенгшщзхъфывапролджэячсмитьбю.ЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮ,"
-    )
-    table = str.maketrans(qwerty, russian)
-    result = message.content.translate(table)
-    await reply(ctx, result)
+    message_text = message.description
+    if message_text:
+        qwerty = (
+            "qwertyuiop[]asdfghjkl;'zxcvbnm,./"
+            "QWERTYUIOP{}ASDFGHJKL:\"ZXCVBNM<>?"
+        )
+        russian = (
+            "йцукенгшщзхъфывапролджэячсмитьбю."
+            "ЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮ,"
+        )
+        table = str.maketrans(qwerty, russian)
+        description = message_text.translate(table)
+        embed = Embed(description=description, color=Color.green())
+    else:
+        description = "Пусто"
+        embed = Embed(description=description, color=Color.red())
+    await ctx.response.send_message(embed=embed)
 
 @bot.tree.command(description="Найти аву чела")
-@app_commands.describe(
-    member="Чел"
-)
+@app_commands.describe(member="Чел")
 async def member_avatar(ctx: Interaction, member: Member) -> None:
-    result = member.display_avatar
-    await reply(ctx, result)
+    description = member.display_avatar
+    embed = Embed(description=description, color=Color.green())
+    await ctx.response.send_message(embed=embed)
 
 @bot.tree.command(description="Посчитать длину строки")
 @app_commands.describe(text="Пиши свою строку")
 async def length(ctx: Interaction, text: str) -> None:
-    result = f"Длина {len(text)}"
-    await reply(ctx, result)
+    description = f"Длина {len(text)}"
+    embed = Embed(description=description, color=Color.green())
+    await ctx.response.send_message(embed=embed)
 
 @bot.tree.command(description="Проверить синхронизацию")
 async def check_sync(ctx: Interaction) -> None:
-    result = "Ага" if bot.sync_enabled else "Нет нихуя"
-    await reply(ctx, result)
+    description = "Ага" if bot.sync_enabled else "Нет нихуя"
+    embed = Embed(description=description, color=Color.green())
+    await ctx.response.send_message(embed=embed)
 
 def is_human_in_text_channel(
     author: Member,
     channel: Messageable
 ) -> bool:
-    result = not author.bot and isinstance(channel, TextChannel)
-    return result
+    return not author.bot and isinstance(channel, TextChannel)
+
+def is_sekai_code(text: str) -> bool:
+    return len(text) == bot.sekai_code_len and text.isdecimal()
+
+def is_manager(author: Member) -> bool:
+    return any(role.name in bot.manager_roles for role in author.roles)
 
 def get_room_prefix(channel_name: str) -> str:
     if len(channel_name) != bot.channel_name_len:
@@ -133,27 +154,6 @@ def get_room_prefix(channel_name: str) -> str:
         return ""
     room_prefix = f"{bot.room_letter}{room_number}-"
     return room_prefix
-
-def is_sekai_code(text: str) -> bool:
-    result = len(text) == bot.sekai_code_len and text.isdecimal()
-    return result
-
-def is_manager(author: Member) -> bool:
-    result = any(role.name in bot.manager_roles for role in author.roles)
-    return result
-
-async def reply(
-    ctx: Interaction,
-    result: str,
-    defer: bool = False
-) -> None:
-    """Send the result."""
-    if result == "":
-        result = "Полундра штото пошло нетак"
-    if defer:
-        await ctx.followup.send(result)
-    else:
-        await ctx.response.send_message(result)
 
 async def main() -> None:
     token = environ["MASTER_TOKEN"]
