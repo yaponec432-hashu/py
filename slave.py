@@ -8,10 +8,14 @@ from uvloop import new_event_loop
 from discord import (
     Intents,
     Client,
+    Embed,
+    Color,
     Game,
     ClientUser,
     Message,
     Member,
+    HTTPException,
+    RateLimited,
     Forbidden
 )
 
@@ -24,6 +28,7 @@ class SlaveBot(Client):
         super().__init__(
             intents=intents,
             activity=activity,
+            max_ratelimit_timeout=30.0,
             chunk_guilds_at_startup=False)
         self.master_id = int(environ["MASTER_ID"])
         self.sekai_code_len = 5
@@ -40,27 +45,28 @@ class SlaveBot(Client):
         channel_name = channel.name
         if name == channel_name:
             return
-        old_code = channel_name[-self.sekai_code_len:]
         new_code = name[-self.sekai_code_len:]
         try:
-            content = f"~~{old_code}~~ → **`{new_code}`**"
-            reason = "ебучие рерумы"
+            content = None
+            description = f"# `{new_code}`
+            embed = Embed(description=description, color=Color.green())
             async with channel.typing():
-                await wait_for(
-                    channel.edit(name=name, reason=reason), timeout=2.0)
-        except TimeoutError:
+                await wait_for(channel.edit(name=name), timeout=2.0)
+        except TimeoutError or RateLimited or HTTPException:
             content = (
                 f"# :warning: Используй эту команду:\n```%rm {new_code}```"
             )
+            embed = None
         except Forbidden:
-            content = "**У меня нет прав** на управление каналами"
-        await message.reply(content=content, mention_author=False)
+            content = None
+            description = "**У меня нет прав** на управление каналами"
+            embed = Embed(description=description, color=Color.red())
+        await message.reply(content=content, embed=embed, mention_author=False)
 
 bot = SlaveBot()
 
 def is_master(author: Member) -> bool:
-    result = author.bot and author.id == bot.master_id
-    return result
+    return author.bot and author.id == bot.master_id
 
 async def main() -> None:
     token = environ["SLAVE_TOKEN"]
