@@ -52,7 +52,7 @@ class SlaveBot(Client):
             embed = Embed(description=description, color=Color.green())
             async with channel.typing():
                 await wait_for(channel.edit(name=name), timeout=2.0)
-        except TimeoutError or RateLimited or HTTPException:
+        except (TimeoutError, RateLimited, HTTPException):
             content = (
                 f"# :warning: Используй эту команду:\n```%rm {new_code}```"
             )
