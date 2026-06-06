@@ -87,7 +87,7 @@ class MasterBot(Client):
 
 bot = MasterBot()
 
-@bot.tree.context_menu(name="Перевести с Кристалийского")
+@bot.tree.context_menu(name="Перевести с кристалийского")
 async def translate_from_crystalian(
     ctx: Interaction,
     message: Message
