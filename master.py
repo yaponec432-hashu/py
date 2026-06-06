@@ -2,9 +2,8 @@
 # SPDX-License-Identifier: 0BSD
 """A discord bot."""
 
-from asyncio import Runner
+from asyncio import wait_for, Runner
 from os import environ
-from gpytranslate import Translator, TranslationError
 from discord.abc import Messageable
 from uvloop import new_event_loop
 from discord import (
@@ -17,6 +16,7 @@ from discord import (
     ClientUser,
     Message,
     Member,
+    HTTPException,
     RateLimited,
     Forbidden
 )
@@ -30,10 +30,10 @@ class MasterBot(Client):
         super().__init__(
             intents=intents,
             activity=activity,
+            max_ratelimit_timeout=30.0,
             chunk_guilds_at_startup=False)
         self.tree = app_commands.CommandTree(self)
         self.sync_enabled = int(environ["BOT_SYNC_ENABLED"])
-        self.max_message_len = 2000
         self.channel_name_len = 8
         self.sekai_code_len = 5
         self.room_letter = "g"
@@ -69,11 +69,11 @@ class MasterBot(Client):
         if not is_manager(author):
             return
         try:
-            content = f"~~{old_code}~~ → **`{message_text}`**"
+            content = f":white_check_mark: `{message_text}`"
             reason = "старый код румы был депнут в казик"
             name = room_prefix + message_text
             await channel.edit(name=name, reason=reason)
-        except RateLimited:
+        except RateLimited or HTTPException:
             content = "z" + name
         except Forbidden:
             content = "**У меня нет прав** на управление каналами"
@@ -95,18 +95,6 @@ async def translate_from_crystalian(
     table = str.maketrans(qwerty, russian)
     result = message.content.translate(table)
     await reply(ctx, result)
-
-@bot.tree.context_menu(name="Translate into English")
-async def translate_into_english(ctx: Interaction, message: Message) -> None:
-    await ctx.response.defer(ephemeral=True)
-    result = await translate(message.content, "en")
-    await reply(ctx, result, True)
-
-@bot.tree.context_menu(name="Перевести на русский")
-async def translate_into_russian(ctx: Interaction, message: Message) -> None:
-    await ctx.response.defer(ephemeral=True)
-    result = await translate(message.content, "ru")
-    await reply(ctx, result, True)
 
 @bot.tree.command(description="Найти аву чела")
 @app_commands.describe(
@@ -153,17 +141,6 @@ def is_sekai_code(text: str) -> bool:
 
 def is_manager(author: Member) -> bool:
     result = any(role.name in bot.manager_roles for role in author.roles)
-    return result
-
-async def translate(source_text: str, target_language: str) -> str:
-    translator = Translator()
-    try:
-        translation = await translator.translate(
-            source_text[:bot.max_message_len],
-            targetlang=target_language)
-        result = translation.text
-    except TranslationError:
-        result = "*Translation error, try again*"
     return result
 
 async def reply(
