@@ -72,8 +72,10 @@ class MasterBot(Client):
             content = f":white_check_mark: `{message_text}`"
             reason = "старый код румы был депнут в казик"
             name = room_prefix + message_text
-            await channel.edit(name=name, reason=reason)
-        except RateLimited or HTTPException:
+            async with channel.typing():
+                await wait_for(
+                    channel.edit(name=name, reason=reason), timeout=2.0)
+        except TimeoutError or RateLimited or HTTPException:
             content = "z" + name
         except Forbidden:
             content = "**У меня нет прав** на управление каналами"
