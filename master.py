@@ -28,7 +28,7 @@ class MasterBot(Client):
     def __init__(self) -> None:
         activity = Game("трахает робонене")
         intents = Intents.default()
-        intents.message_description = True
+        intents.message_content = True
         super().__init__(
             intents=intents,
             activity=activity,
@@ -76,7 +76,7 @@ class MasterBot(Client):
             name = room_prefix + message_text
             async with channel.typing():
                 await wait_for(channel.edit(name=name), timeout=2.0)
-        except TimeoutError or RateLimited or HTTPException:
+        except (TimeoutError, RateLimited, HTTPException):
             content = "z" + name
             embed = None
         except Forbidden:
@@ -92,7 +92,7 @@ async def translate_from_crystalian(
     ctx: Interaction,
     message: Message
 ) -> None:
-    message_text = message.description
+    message_text = message.content
     if message_text:
         qwerty = (
             "qwertyuiop[]asdfghjkl;'zxcvbnm,./"
