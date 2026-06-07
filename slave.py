@@ -50,20 +50,19 @@ class SlaveBot(Client):
             return
         new_code = name[-self.sekai_code_len:]
         try:
-            content = None
-            description = f"# `{new_code}`"
-            embed = Embed(description=description, color=Color.green())
+            description = f"# `{new_code}`\nНовый код румы"
+            color = Color.green()
             async with channel.typing():
                 await wait_for(channel.edit(name=name), timeout=2.0)
         except (TimeoutError, RateLimited, HTTPException):
             content = (
                 f"# :warning: Используй эту команду:\n```%rm {new_code}```"
             )
-            embed = None
         except Forbidden:
-            content = None
             description = "**У меня нет прав** на управление каналами"
-            embed = Embed(description=description, color=Color.red())
+            color = Color.red()
+        if description and color:
+            embed = Embed(description=description, color=color)
         await message.reply(content=content, embed=embed, mention_author=False)
 
 
