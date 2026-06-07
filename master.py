@@ -84,7 +84,7 @@ class MasterBot(Client):
         except Forbidden:
             description = "**У меня нет прав** на управление каналами"
             color = Color.red()
-        if description and color:
+        if not content:
             embed = Embed(description=description, color=color)
         await message.reply(content=content, embed=embed, mention_author=False)
 
