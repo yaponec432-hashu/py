@@ -49,6 +49,7 @@ class SlaveBot(Client):
         if name == channel_name:
             return
         new_code = name[-self.sekai_code_len:]
+        content = description = color = None
         try:
             description = f"# `{new_code}`\nНовый код румы"
             color = Color.green()
