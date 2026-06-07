@@ -72,7 +72,7 @@ class MasterBot(Client):
             return
         if not is_manager(author):
             return
-        content = description = color = None
+        content = embed = None
         try:
             description = f"# `{message_text}`\nНовый код румы"
             color = Color.green()
