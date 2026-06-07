@@ -71,7 +71,7 @@ class MasterBot(Client):
             return
         try:
             content = None
-            description = f"# `{message_text}`"
+            description = f"# `{message_text}`\nНовый код румы"
             embed = Embed(description=description, color=Color.green())
             name = room_prefix + message_text
             async with channel.typing():
