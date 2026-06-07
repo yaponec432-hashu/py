@@ -72,20 +72,20 @@ class MasterBot(Client):
             return
         if not is_manager(author):
             return
+        content = description = color = None
         try:
-            content = None
             description = f"# `{message_text}`\nНовый код румы"
-            embed = Embed(description=description, color=Color.green())
+            color = Color.green()
             name = room_prefix + message_text
             async with channel.typing():
                 await wait_for(channel.edit(name=name), timeout=2.0)
         except (TimeoutError, RateLimited, HTTPException):
             content = "z" + name
-            embed = None
         except Forbidden:
-            content = None
             description = "**У меня нет прав** на управление каналами"
-            embed = Embed(description=description, color=Color.red())
+            color = Color.red()
+        if description and color:
+            embed = Embed(description=description, color=color)
         await message.reply(content=content, embed=embed, mention_author=False)
 
 
@@ -109,10 +109,11 @@ async def translate_from_crystalian(
         )
         table = str.maketrans(qwerty, russian)
         description = message_text.translate(table)
-        embed = Embed(description=description, color=Color.green())
+        color = Color.green()
     else:
         description = "Пусто"
-        embed = Embed(description=description, color=Color.red())
+        color = Color.red()
+    embed = Embed(description=description, color=color)
     await ctx.response.send_message(embed=embed)
 
 
