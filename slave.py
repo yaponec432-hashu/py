@@ -48,7 +48,7 @@ class SlaveBot(Client):
         new_code = name[-self.sekai_code_len:]
         try:
             content = None
-            description = f"# `{new_code}`
+            description = f"# `{new_code}`"
             embed = Embed(description=description, color=Color.green())
             async with channel.typing():
                 await wait_for(channel.edit(name=name), timeout=2.0)
