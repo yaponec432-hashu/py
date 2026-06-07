@@ -4,6 +4,7 @@
 
 from asyncio import wait_for, Runner
 from os import environ
+
 from uvloop import new_event_loop
 from discord import (
     Intents,
@@ -19,8 +20,10 @@ from discord import (
     Forbidden
 )
 
+
 class SlaveBot(Client):
     user: ClientUser
+
     def __init__(self) -> None:
         activity = Game("я робот долбаеб")
         intents = Intents.default()
@@ -63,15 +66,19 @@ class SlaveBot(Client):
             embed = Embed(description=description, color=Color.red())
         await message.reply(content=content, embed=embed, mention_author=False)
 
+
 bot = SlaveBot()
+
 
 def is_master(author: Member) -> bool:
     return author.bot and author.id == bot.master_id
+
 
 async def main() -> None:
     token = environ["SLAVE_TOKEN"]
     async with bot:
         await bot.start(token)
+
 
 if __name__ == "__main__":
     with Runner(loop_factory=new_event_loop) as runner:
