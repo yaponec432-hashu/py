@@ -4,6 +4,7 @@
 
 from asyncio import wait_for, Runner
 from os import environ
+
 from discord.abc import Messageable
 from uvloop import new_event_loop
 from discord import (
@@ -23,8 +24,10 @@ from discord import (
     Forbidden
 )
 
+
 class MasterBot(Client):
     user: ClientUser
+
     def __init__(self) -> None:
         activity = Game("трахает робонене")
         intents = Intents.default()
@@ -47,7 +50,7 @@ class MasterBot(Client):
         }
 
     async def setup_hook(self) -> None:
-        with open("./master_id", "w") as file:
+        with open("master_id", "w") as file:
             file.write(f"{self.user.id}\n")
         if self.sync_enabled:
             await self.tree.sync()
@@ -85,7 +88,9 @@ class MasterBot(Client):
             embed = Embed(description=description, color=Color.red())
         await message.reply(content=content, embed=embed, mention_author=False)
 
+
 bot = MasterBot()
+
 
 @bot.tree.context_menu(name="Перевести с кристалийского")
 async def translate_from_crystalian(
@@ -110,12 +115,14 @@ async def translate_from_crystalian(
         embed = Embed(description=description, color=Color.red())
     await ctx.response.send_message(embed=embed)
 
+
 @bot.tree.command(description="Найти аву чела")
 @app_commands.describe(member="Чел")
 async def member_avatar(ctx: Interaction, member: Member) -> None:
     description = member.display_avatar
     embed = Embed(description=description, color=Color.green())
     await ctx.response.send_message(embed=embed)
+
 
 @bot.tree.command(description="Посчитать длину строки")
 @app_commands.describe(text="Пиши свою строку")
@@ -124,11 +131,13 @@ async def length(ctx: Interaction, text: str) -> None:
     embed = Embed(description=description, color=Color.green())
     await ctx.response.send_message(embed=embed)
 
+
 @bot.tree.command(description="Проверить синхронизацию")
 async def check_sync(ctx: Interaction) -> None:
     description = "Ага" if bot.sync_enabled else "Нет нихуя"
     embed = Embed(description=description, color=Color.green())
     await ctx.response.send_message(embed=embed)
+
 
 def is_human_in_text_channel(
     author: Member,
@@ -136,11 +145,14 @@ def is_human_in_text_channel(
 ) -> bool:
     return not author.bot and isinstance(channel, TextChannel)
 
+
 def is_sekai_code(text: str) -> bool:
     return len(text) == bot.sekai_code_len and text.isdecimal()
 
+
 def is_manager(author: Member) -> bool:
     return any(role.name in bot.manager_roles for role in author.roles)
+
 
 def get_room_prefix(channel_name: str) -> str:
     if len(channel_name) != bot.channel_name_len:
@@ -155,10 +167,12 @@ def get_room_prefix(channel_name: str) -> str:
     room_prefix = f"{bot.room_letter}{room_number}-"
     return room_prefix
 
+
 async def main() -> None:
     token = environ["MASTER_TOKEN"]
     async with bot:
        await bot.start(token)
+
 
 if __name__ == "__main__":
     with Runner(loop_factory=new_event_loop) as runner:
