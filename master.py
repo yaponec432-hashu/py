@@ -172,8 +172,7 @@ def get_room_prefix(channel_name: str) -> str:
     room_number = channel_name[1]
     if not room_number.isdecimal():
         return ""
-    room_prefix = f"{bot.room_letter}{room_number}-"
-    return room_prefix
+    return f"{bot.room_letter}{room_number}-"
 
 
 async def main() -> None:
