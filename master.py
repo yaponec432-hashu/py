@@ -117,12 +117,19 @@ async def translate_from_crystalian(
     await ctx.response.send_message(embed=embed)
 
 
-@bot.tree.command(description="Найти аву чела")
-@app_commands.describe(member="Чел")
-async def member_avatar(ctx: Interaction, member: Member) -> None:
-    description = member.display_avatar
-    embed = Embed(description=description, color=Color.green())
-    await ctx.response.send_message(embed=embed)
+@bot.tree.command(description="Данные профиля чела")
+@app_commands.choices(
+    item=[
+        app_commands.Choice(name="Ава", value="display_avatar"),
+        app_commands.Choice(name="Username", value="name"),
+        app_commands.Choice(name="ID", value="id")
+    ]
+)
+@app_commands.describe(member="Чел", item="Докс сват спортики")
+async def member_info(ctx: Interaction, member: Member, item: str) -> None:
+    data = getattr(member, item)
+    content = "> " + data if item == "display_avatar" else f"```{data}```"
+    await ctx.response.send_message(content=content)
 
 
 @bot.tree.command(description="Посчитать длину строки")
