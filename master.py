@@ -117,6 +117,21 @@ async def translate_from_crystalian(
     await ctx.response.send_message(embed=embed)
 
 
+@bot.tree.command(description="Данные сервака")
+@app_commands.choices(
+    item=[
+        app_commands.Choice(name="Иконка", value="icon"),
+        app_commands.Choice(name="Баннер", value="banner"),
+        app_commands.Choice(name="ID", value="id")
+    ]
+)
+@app_commands.describe(item="Докс сват спортики")
+async def member_data(ctx: Interaction, item: str) -> None:
+    data = + getattr(ctx.guild, item)
+    content = f"```{data}```" if item == "id" else "> " + data
+    await ctx.response.send_message(content=content)
+
+
 @bot.tree.command(description="Данные профиля чела")
 @app_commands.choices(
     item=[
