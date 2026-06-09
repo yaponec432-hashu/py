@@ -126,7 +126,7 @@ async def translate_from_crystalian(
     ]
 )
 @app_commands.describe(member="Чел", item="Докс сват спортики")
-async def member_info(ctx: Interaction, member: Member, item: str) -> None:
+async def member_data(ctx: Interaction, member: Member, item: str) -> None:
     data = getattr(member, item)
     content = "> " + data if item == "display_avatar" else f"```{data}```"
     await ctx.response.send_message(content=content)
