@@ -97,6 +97,7 @@ async def translate_from_crystalian(
     ctx: Interaction,
     message: Message
 ) -> None:
+    description = message.jump_url + "\n"
     message_text = message.content
     if message_text:
         qwerty = (
@@ -108,10 +109,10 @@ async def translate_from_crystalian(
             "ЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮ,"
         )
         table = str.maketrans(qwerty, russian)
-        description = message_text.translate(table)
+        description += message_text.translate(table)
         color = Color.green()
     else:
-        description = "Пусто"
+        description += "Пусто"
         color = Color.red()
     embed = Embed(description=description, color=color)
     await ctx.response.send_message(embed=embed)
