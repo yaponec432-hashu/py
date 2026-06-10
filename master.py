@@ -73,10 +73,10 @@ class MasterBot(Client):
         if not is_manager(author):
             return
         content = embed = None
+        name = room_prefix + message_text
         try:
             description = f"# `{message_text}`\nНовый код румы"
             color = Color.green()
-            name = room_prefix + message_text
             async with channel.typing():
                 await wait_for(channel.edit(name=name), timeout=2.0)
         except (TimeoutError, RateLimited, HTTPException):
