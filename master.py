@@ -123,6 +123,7 @@ async def translate_from_crystalian(
     item=[
         app_commands.Choice(name="Иконка", value="icon"),
         app_commands.Choice(name="Баннер", value="banner"),
+        app_commands.Choice(name="Сплэш инвайта", value="splash"),
         app_commands.Choice(name="ID", value="id")
     ]
 )
