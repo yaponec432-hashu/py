@@ -42,6 +42,15 @@ class MasterBot(Client):
         self.channel_name_len = 8
         self.sekai_code_len = 5
         self.room_letter = "g"
+        self.qwerty = (
+            "qwertyuiop[]asdfghjkl;'zxcvbnm,./"
+            "QWERTYUIOP{}ASDFGHJKL:\"ZXCVBNM<>?"
+        )
+        self.russian = (
+            "йцукенгшщзхъфывапролджэячсмитьбю."
+            "ЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮ,"
+        )
+        self.trans_table = str.maketrans(qwerty, russian)
         self.manager_roles = {
             "Раннер ростера",
             "Лид-менеджер",
@@ -100,16 +109,7 @@ async def translate_from_crystalian(
     description = message.jump_url + "\n"
     message_text = message.content
     if message_text:
-        qwerty = (
-            "qwertyuiop[]asdfghjkl;'zxcvbnm,./"
-            "QWERTYUIOP{}ASDFGHJKL:\"ZXCVBNM<>?"
-        )
-        russian = (
-            "йцукенгшщзхъфывапролджэячсмитьбю."
-            "ЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮ,"
-        )
-        table = str.maketrans(qwerty, russian)
-        description += message_text.translate(table)
+        description += message_text.translate(bot.trans_table)
         color = Color.green()
     else:
         description += "Пусто"
