@@ -50,7 +50,7 @@ class MasterBot(Client):
             "йцукенгшщзхъфывапролджэячсмитьбю."
             "ЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮ,"
         )
-        self.trans_table = str.maketrans(qwerty, russian)
+        self.trans_table = str.maketrans(self.qwerty, self.russian)
         self.manager_roles = {
             "Раннер ростера",
             "Лид-менеджер",
