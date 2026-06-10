@@ -5,8 +5,8 @@ set -e
 
 get_master_id() {
     local master_id_file='./master_id'
-    until [[ -r "${master_id_file}" ]]; do
-        sleep 1
+    until [[ -s "${master_id_file}" ]]; do
+        sleep 0.1
     done
     cat "${master_id_file}"
 }
