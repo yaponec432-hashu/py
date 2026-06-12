@@ -2,24 +2,32 @@
 # SPDX-License-Identifier: 0BSD
 """A discord bot."""
 
-from asyncio import wait_for, Runner                                        from os import environ
+from asyncio import wait_for, Runner
+from os import environ
 
 from discord.abc import Messageable
-from uvloop import new_event_loop                                           from discord import (
+from uvloop import new_event_loop
+from discord import (
     app_commands,
-    Intents,                                                                    Client,
+    Intents,
+    Client,
     Embed,
     Color,
     Game,
     Interaction,
-    TextChannel,                                                                ClientUser,
+    TextChannel,
+    ClientUser,
     Message,
-    Member,                                                                     HTTPException,
+    Member,
+    HTTPException,
     RateLimited,
     Forbidden
-)                                                                           
+)
 
-class MasterBot(Client):                                                        user: ClientUser                                                        
+
+class MasterBot(Client):
+    user: ClientUser
+
     def __init__(self) -> None:
         activity = Game("трахает робонене")
         intents = Intents.default()
@@ -30,7 +38,7 @@ class MasterBot(Client):                                                        
             max_ratelimit_timeout=30.0,
             chunk_guilds_at_startup=False)
         self.tree = app_commands.CommandTree(self)
-         self.sync_enabled = int(environ["BOT_SYNC_ENABLED"])
+        self.sync_enabled = int(environ["BOT_SYNC_ENABLED"])
         self.sekai = SekaiManager()
 
     async def setup_hook(self) -> None:
