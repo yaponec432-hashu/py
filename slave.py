@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: 0BSD
 """A discord bot."""
 
-from logging import basicConfig, INFO
+from logging import basicConfig, ERROR
 from asyncio import wait_for, Runner
 from os import environ
 
@@ -43,7 +43,7 @@ class SlaveBot(Client):
 class SekaiManager:
     def __init__(self) -> None:
         self.master_id = int(environ["MASTER_ID"])
-        self.sekai_code_len = 5
+        self.room_code_len = 5
 
     def is_master(self, author: Member) -> bool:
         return author.bot and author.id == self.master_id
@@ -89,6 +89,6 @@ async def main() -> None:
 
 
 if __name__ == "__main__":
-    basicConfig(level=INFO)
+    basicConfig(level=ERROR)
     with Runner(loop_factory=new_event_loop) as runner:
         runner.run(main())
