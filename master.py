@@ -98,7 +98,7 @@ class SekaiManager:
         if not self.is_sekai_code(message_text):
             return
         channel_name = channel.name
-        if message_text == channel_name[-self.sekai_code_len:]:
+        if message_text == channel_name[-self.room_code_len:]:
             return
         room_prefix = self.get_room_prefix(channel_name)
         if not room_prefix:
