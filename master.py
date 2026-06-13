@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: 0BSD
 """A discord bot."""
 
-from logging import basicConfig, INFO
+from logging import basicConfig, ERROR
 from asyncio import wait_for, Runner
 from os import environ
 
@@ -213,6 +213,6 @@ async def main() -> None:
 
 
 if __name__ == "__main__":
-    basicConfig(level=INFO)
+    basicConfig(level=ERROR)
     with Runner(loop_factory=new_event_loop) as runner:
         runner.run(main())
