@@ -5,6 +5,7 @@
 from asyncio import wait_for, Runner
 from os import environ
 
+from discord.abc import Messageable
 from uvloop import new_event_loop
 from discord import (
     app_commands,
