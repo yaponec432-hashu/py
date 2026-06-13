@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: 0BSD
 """A discord bot."""
 
+from logging import basicConfig, ERROR
 from asyncio import wait_for, Runner
 from os import environ
 
@@ -33,12 +34,23 @@ class SlaveBot(Client):
             activity=activity,
             max_ratelimit_timeout=30.0,
             chunk_guilds_at_startup=False)
+        self.sekai = SekaiManager()
+
+    async def on_message(self, message: Message) -> None:
+        self.sekai.update_room_code(message)
+
+
+class SekaiManager:
+    def __init__(self) -> None:
         self.master_id = int(environ["MASTER_ID"])
         self.sekai_code_len = 5
 
-    async def on_message(self, message: Message) -> None:
+    def is_master(self, author: Member) -> bool:
+        return author.bot and author.id == self.master_id
+
+    async def update_room_code(self, message: Message) -> None:
         """Backup sekai room code highlighting."""
-        if not is_master(message.author):
+        if not self.is_master(message.author):
             return
         message_text = message.content
         if message_text[0] != "z":
@@ -48,7 +60,7 @@ class SlaveBot(Client):
         channel_name = channel.name
         if name == channel_name:
             return
-        new_code = name[-self.sekai_code_len:]
+        new_code = name[-self.room_code_len:]
         content = embed = None
         try:
             description = f"# `{new_code}`\nНовый код румы"
@@ -70,10 +82,6 @@ class SlaveBot(Client):
 bot = SlaveBot()
 
 
-def is_master(author: Member) -> bool:
-    return author.bot and author.id == bot.master_id
-
-
 async def main() -> None:
     token = environ["SLAVE_TOKEN"]
     async with bot:
@@ -81,5 +89,6 @@ async def main() -> None:
 
 
 if __name__ == "__main__":
+    basicConfig(level=ERROR)
     with Runner(loop_factory=new_event_loop) as runner:
         runner.run(main())
