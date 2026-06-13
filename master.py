@@ -5,7 +5,6 @@
 from asyncio import wait_for, Runner
 from os import environ
 
-from discord.abc import Messageable
 from uvloop import new_event_loop
 from discord import (
     app_commands,
@@ -54,7 +53,7 @@ class MasterBot(Client):
 class SekaiManager:
     def __init__(self) -> None:
         self.channel_name_len = 8
-        self.sekai_code_len = 5
+        self.room_code_len = 5
         self.room_letter = "g"
         self.manager_roles = {
             "Раннер ростера",
@@ -71,7 +70,7 @@ class SekaiManager:
         return not author.bot and isinstance(channel, TextChannel)
 
     def is_sekai_code(self, text: str) -> bool:
-        return len(text) == self.sekai_code_len and text.isdecimal()
+        return len(text) == self.room_code_len and text.isdecimal()
 
     def is_manager(self, author: Member) -> bool:
         return any(role.name in self.manager_roles for role in author.roles)
