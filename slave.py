@@ -37,7 +37,7 @@ class SlaveBot(Client):
         self.sekai = SekaiManager()
 
     async def on_message(self, message: Message) -> None:
-        self.sekai.update_room_code(message)
+        await self.sekai.update_room_code(message)
 
 
 class SekaiManager:
