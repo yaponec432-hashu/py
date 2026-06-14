@@ -58,9 +58,8 @@ class SekaiManager:
         if message_text[0] != "z":
             return
         channel = message.channel
-        channel_name = channel.name
         name = message_text[1:]
-        if name == channel_name:
+        if name == channel.name:
             return
         new_room_code = name[-self.room_code_len:]
         content = embed = None
@@ -71,7 +70,8 @@ class SekaiManager:
                 await wait_for(channel.edit(name=name), timeout=2.0)
         except (TimeoutError, RateLimited, HTTPException):
             content = (
-                f"# :warning: Используй эту команду:\n```%rm {new_room_code}```"
+                "# :warning: Используй эту команду:"
+                f"\n```%rm {new_room_code}```"
             )
         except Forbidden:
             description = "**У меня нет прав** на управление каналами"
