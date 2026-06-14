@@ -106,8 +106,8 @@ class SekaiManager:
             return
         if not self.is_manager(author):
             return
-        content = embed = None
         name = room_prefix + message_text
+        content = embed = None
         try:
             description = f"# `{message_text}`\nНовый код румы"
             color = Color.green()
